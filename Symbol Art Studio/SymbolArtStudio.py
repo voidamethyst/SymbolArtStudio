@@ -36,7 +36,6 @@ class PaintApp:
         self.save_state()
 
     def setup_gui(self):
-        # Налаштування меню
         menubar = tk.Menu(self.root)
         self.root.config(menu=menubar)
 
@@ -57,7 +56,6 @@ class PaintApp:
         menubar.add_cascade(label="Полотно", menu=canvas_menu)
         canvas_menu.add_command(label="Змінити розмір", command=self.change_canvas_size)
 
-        # Панель інструментів
         toolbar = tk.Frame(self.root)
         toolbar.grid(row=0, column=0, sticky='ew', padx=5, pady=5)
 
@@ -77,36 +75,32 @@ class PaintApp:
                                    bg=self.current_color, fg='white' if self.current_color == 'black' else 'black')
         self.color_btn.pack(side=tk.LEFT, padx=5)
 
-        # Додаємо кнопку ластика
+
         self.eraser_btn = tk.Button(toolbar, text="Ластик", command=self.toggle_eraser)
         self.eraser_btn.pack(side=tk.LEFT, padx=5)
 
-        # Frame для обмеження розміру текстового віджета
         self.canvas_frame = tk.Frame(self.root)
         self.canvas_frame.grid(row=1, column=0, sticky='nsew', padx=5, pady=5)
         self.canvas_frame.grid_propagate(False)
 
-        # Додаємо скролбари
         self.v_scrollbar = tk.Scrollbar(self.canvas_frame, orient='vertical')
         self.h_scrollbar = tk.Scrollbar(self.canvas_frame, orient='horizontal')
         self.v_scrollbar.pack(side='right', fill='y')
         self.h_scrollbar.pack(side='bottom', fill='x')
 
-        # Текстовий віджет
         self.text_widget = tk.Text(self.canvas_frame,
                                    wrap=tk.NONE,
                                    font=('Courier New', 12),
                                    selectbackground='white',
                                    selectforeground='black',
                                    inactiveselectbackground='white',
-                                   width=self.canvas_width + 2,  # +2 для границь
-                                   height=self.canvas_height + 2,  # +2 для границь
+                                   width=self.canvas_width + 2,  
+                                   height=self.canvas_height + 2,  
                                    yscrollcommand=self.v_scrollbar.set,
                                    xscrollcommand=self.h_scrollbar.set)
 
         self.text_widget.pack(side='left', fill='both', expand=True)
 
-        # Налаштування скролбарів
         self.v_scrollbar.config(command=self.text_widget.yview)
         self.h_scrollbar.config(command=self.text_widget.xview)
 
@@ -125,11 +119,10 @@ class PaintApp:
 
     def draw_borders(self):
         self.text_widget.config(state='normal')
-        # Верхня границя
+
         self.text_widget.delete("1.0", "1.end")
         self.text_widget.insert("1.0", '┌' + '─' * self.canvas_width + '┐\n')
 
-        # Бокові границі
         for i in range(self.canvas_height):
             line_num = i + 2
             self.text_widget.delete(f"{line_num}.0")
@@ -137,7 +130,6 @@ class PaintApp:
             self.text_widget.delete(f"{line_num}.{self.canvas_width + 1}")
             self.text_widget.insert(f"{line_num}.{self.canvas_width + 1}", '│\n')
 
-        # Нижня границя
         last_line = self.canvas_height + 2
         self.text_widget.delete(f"{last_line}.0", f"{last_line}.end")
         self.text_widget.insert(f"{last_line}.0", '└' + '─' * self.canvas_width + '┘\n')
@@ -148,14 +140,11 @@ class PaintApp:
         self.text_widget.config(state='normal')
         self.text_widget.delete(1.0, tk.END)
 
-        # Додаємо верхню границю
         self.text_widget.insert(tk.END, '┌' + '─' * self.canvas_width + '┐\n')
 
-        # Додаємо основне полотно з боковими границями
         for _ in range(self.canvas_height):
             self.text_widget.insert(tk.END, '│' + ' ' * self.canvas_width + '│\n')
 
-        # Додаємо нижню границю
         self.text_widget.insert(tk.END, '└' + '─' * self.canvas_width + '┘\n')
 
         self.text_widget.config(state='disabled')
@@ -172,14 +161,12 @@ class PaintApp:
         index = self.text_widget.index(f"@{event.x},{event.y}")
         line, col = map(int, index.split('.'))
 
-        # Перевіряємо чи знаходимося в межах полотна (враховуючи границі)
         if 1 < line < self.canvas_height + 2 and 0 < col < self.canvas_width + 1:
             self.text_widget.config(state='normal')
             self.text_widget.delete(f"{line}.{col}")
 
             if self.eraser_mode:
                 self.text_widget.insert(f"{line}.{col}", ' ')
-                # Видаляємо тег кольору якщо він є
                 for tag in self.text_widget.tag_names(f"{line}.{col}"):
                     if tag.startswith("color_"):
                         self.text_widget.tag_remove(tag, f"{line}.{col}")
@@ -291,10 +278,10 @@ class PaintApp:
                 self.text_widget.insert(1.0, content)
                 self.text_widget.config(state='disabled')
 
-def main():  # <- це правильно (без відступу)
+def main():
     root = tk.Tk()
     app = PaintApp(root)
     root.mainloop()
 
-if __name__ == "__main__":  # <- це правильно (без відступу)
+if __name__ == "__main__":
     main()
