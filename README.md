@@ -1,1 +1,5 @@
 # SymbolArtStudio
+This program, called SymbolArtStudio, is a text-based graphical editor that allows users to create artistic images using symbols. Users can select various symbols, change colors, use an eraser, and save or open their work. The program supports undo/redo actions and allows users to resize the canvas. The interface is user-friendly and includes a menu with key commands for file management, editing, and canvas settings.
+________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+Ця програма, названа SymbolArtStudio, є текстовим графічним редактором, який дозволяє створювати художні зображення за допомогою символів. Користувачі можуть вибирати різні символи, змінювати кольори, використовувати ластик, а також зберігати та відкривати свої роботи. Програма підтримує функції відміни/повтору дій та дозволяє змінювати розмір полотна. Інтерфейс зручний та містить меню з основними командами для роботи з файлами, редагування та налаштування полотна.
