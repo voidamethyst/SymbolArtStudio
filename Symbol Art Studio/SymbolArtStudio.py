@@ -94,8 +94,8 @@ class PaintApp:
                                    selectbackground='white',
                                    selectforeground='black',
                                    inactiveselectbackground='white',
-                                   width=self.canvas_width + 2,  
-                                   height=self.canvas_height + 2,  
+                                   width=self.canvas_width + 2,
+                                   height=self.canvas_height + 2,
                                    yscrollcommand=self.v_scrollbar.set,
                                    xscrollcommand=self.h_scrollbar.set)
 
@@ -112,6 +112,24 @@ class PaintApp:
 
         self.update_frame_size()
         self.clear_canvas()
+
+        self.clear_btn = tk.Button(toolbar, text="Очистити", command=self.full_clear_canvas)
+        self.clear_btn.pack(side=tk.LEFT, padx=5)
+
+    def full_clear_canvas(self):
+        self.text_widget.config(state='normal')
+        self.text_widget.delete(1.0, tk.END)
+        self.text_widget.insert(tk.END, '┌' + '─' * self.canvas_width + '┐\n')
+        for _ in range(self.canvas_height):
+            self.text_widget.insert(tk.END, '│' + ' ' * self.canvas_width + '│\n')
+        self.text_widget.insert(tk.END, '└' + '─' * self.canvas_width + '┘\n')
+        for tag in self.text_widget.tag_names():
+            if tag.startswith('color_'):
+                self.text_widget.tag_delete(tag)
+        self.text_widget.config(state='disabled')
+        if self.eraser_mode:
+            self.toggle_eraser()
+        self.save_state()
 
     def toggle_eraser(self):
         self.eraser_mode = not self.eraser_mode
